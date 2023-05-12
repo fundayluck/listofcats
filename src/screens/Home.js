@@ -1,12 +1,16 @@
-import { View, SafeAreaView, FlatList, ActivityIndicator, StyleSheet, Text } from 'react-native'
-import { useFetchCats } from '../components/hooks'
+import { View, SafeAreaView, FlatList, ActivityIndicator, StyleSheet, Text, TextInput } from 'react-native'
 import CatsCard from '../components/CatsCard'
 import { WIDTH } from '../helper/Dimension'
+import useFetchCats from '../hooks/useFetchCats'
+import { useEffect, useState } from 'react'
 
 const Home = () => {
-    const { data, loading, messageError } = useFetchCats()
+    const [filter, setFilter] = useState('')
 
-    if (messageError !== null) return <View style={
+    const { data, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } =
+        useFetchCats();
+
+    if (isError) return <View style={
         [style.container, style.horizontal, {
             flex: 1,
             flexDirection: 'column',
@@ -18,28 +22,45 @@ const Home = () => {
             style={{
                 alignSelf: 'center',
                 textAlign: 'center',
-                fontSize: 10,
+                fontSize: 20,
                 marginHorizontal: WIDTH * 0.03
             }}
-        >{messageError}</Text>
+        >An error occurred while fetching data</Text>
     </View >
 
-    if (loading) return <View style={[style.container, style.horizontal]}>
+    if (isLoading) return <View style={[style.container, style.horizontal]}>
         <ActivityIndicator
             size={'large'}
         />
     </View>
 
+    const flattenData = data.pages.flatMap((page) => page.data);
+
+    const loadNext = () => {
+        if (hasNextPage) {
+            fetchNextPage();
+        }
+    };
+
     return (
-        <SafeAreaView>
+        <SafeAreaView style={{ flex: 1 }}>
             <FlatList
                 keyExtractor={(item) => item.id}
-                data={data}
+                data={flattenData}
                 renderItem={({ item }) =>
                     <CatsCard
                         cat={item}
                     />
                 }
+                onEndReachedThreshold={10}
+                ListFooterComponent={isFetchingNextPage ?
+                    <ActivityIndicator
+                        size={'large'}
+                    />
+                    :
+                    null
+                }
+                onEndReached={loadNext}
             />
         </SafeAreaView>
     )
