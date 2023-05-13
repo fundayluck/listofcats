@@ -19,7 +19,7 @@ const Home = () => {
         } else if (searchTerm.length < 1) {
             setOnFilter(false)
         }
-    }, [])
+    }, [searchTerm])
 
     if (isError || error) return <View style={
         [style.container, style.horizontal, {
@@ -68,7 +68,7 @@ const Home = () => {
                 <Icon name='search1' style={{ alignSelf: 'center' }} size={18} />
                 <TextInput
                     style={{ width: '100%' }}
-                    placeholder='search by name'
+                    placeholder='search by name of cat'
                     value={searchTerm}
                     onChangeText={text => setSearchTerm(text)}
                 />
