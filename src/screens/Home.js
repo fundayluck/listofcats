@@ -9,7 +9,6 @@ import Icon from 'react-native-vector-icons/AntDesign'
 const Home = () => {
     const [searchTerm, setSearchTerm] = useState('')
     const [onfilter, setOnFilter] = useState(false)
-    console.log('search', onfilter);
     const { filterData, error } = useFetchCatsByFilter(searchTerm)
     const { data, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } =
         useFetchCats();
