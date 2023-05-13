@@ -1,8 +1,8 @@
 import React from 'react'
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Avatar, Button, Card, Text } from 'react-native-paper';
-import { useHandleDetail } from './hooks'
 import Rating from './Rating';
+import { useHandleDetail } from '../hooks/useHandleDetail';
 
 const CatsCard = ({ cat }) => {
     const { expandedIndex, handleClick } = useHandleDetail()

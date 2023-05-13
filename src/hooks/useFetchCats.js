@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
 export default function useFetchCats() {
     const getCats = async ({ pageParam = 0 }) => {
@@ -14,7 +14,7 @@ export default function useFetchCats() {
         };
     };
 
-    return useInfiniteQuery(["useFetchCats"], getCats, {
+    return useInfiniteQuery([""], getCats, {
         getNextPageParam: (lastPage) => {
             if (lastPage.data.length < 10) return undefined;
 
